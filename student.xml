@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<allstudents>
+<student>
+<surname>Сергеев</surname>
+<firstname>Сергей</firstname>
+<middlename>Сергеевич</middlename>
+<dateBirthday>1997-02-17</dateBirthday>
+<dateReceipt>2014-05-26</dateReceipt>
+<dateExpiration>2018-02-10</dateExpiration>
+</student>
+<student>
+<surname>Сидоров</surname>
+<firstname>Андрей</firstname>
+<middlename>Олегович</middlename>
+<dateBirthday>2020-01-22</dateBirthday>
+<dateReceipt>2034-09-08</dateReceipt>
+<dateExpiration>2038-07-11</dateExpiration>
+</student>
+<student>
+<surname>Андреев</surname>
+<firstname>Павел</firstname>
+<middlename>Николаевич</middlename>
+<dateBirthday>2010-05-07</dateBirthday>
+<dateReceipt>2028-09-01</dateReceipt>
+<dateExpiration>2034-06-29</dateExpiration>
+</student>
+</allstudents>
