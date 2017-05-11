@@ -116,7 +116,6 @@ public class DialogCreate {
                     dialog.dispose();
                 }
             }
-
         });
     }
 }

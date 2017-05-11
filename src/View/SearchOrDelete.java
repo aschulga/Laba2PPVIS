@@ -242,7 +242,7 @@ public class SearchOrDelete {
     {
         boolean b = false;
         if((surNameTextField.getText().equals(""))||(firstNameTextField.getText().equals(""))
-                ||(middleNameTextField.equals(""))||(dayTextField.getText().equals(""))) {
+                ||(middleNameTextField.getText().equals(""))||(dayTextField.getText().equals(""))) {
             JOptionPane.showMessageDialog(new Frame(), "Заполните все необходимые поля. Для продолжения работы нажмите \"ОК\"");
         }
         else b = true;

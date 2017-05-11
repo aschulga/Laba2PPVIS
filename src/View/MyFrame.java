@@ -25,7 +25,6 @@ public class MyFrame {
     private JFrame frame = new JFrame();
     private Table table;
 
-
     JToolBar tb = new JToolBar();
     JButton createButton = new JButton(new ImageIcon("1.png"));
     JButton openButton = new JButton(new ImageIcon("2.png"));
@@ -44,17 +43,8 @@ public class MyFrame {
     private JMenuItem saveMenuItem = new JMenuItem("Сохранить");
     private JMenuItem exitMenuItem = new JMenuItem("Выход");
 
-    private JMenuItem menuItem1 = new JMenuItem("Найти по ФИО и дню рождения");
-    private JMenuItem menuItem2 = new JMenuItem("Найти по году рождения и дню рождения");
-    private JMenuItem menuItem3 = new JMenuItem("Найти по месяцу и дню рождения");
-    private JMenuItem menuItem4 = new JMenuItem("Найти по дате поступления в вуз");
-    private JMenuItem menuItem5 = new JMenuItem("Найти по дате окончания вуза");
-
-    private JMenuItem menuDelete1 = new JMenuItem("Удалить по ФИО и дню рождения");
-    private JMenuItem menuDelete2 = new JMenuItem("Удалить по году рождения и дню рождения");
-    private JMenuItem menuDelete3 = new JMenuItem("Удалить по месяцу и дню рождения");
-    private JMenuItem menuDelete4 = new JMenuItem("Удалить по дате поступления в вуз");
-    private JMenuItem menuDelete5 = new JMenuItem("Удалить по дате окончания вуза");
+    private JMenuItem searchMenuItem = new JMenuItem("Найти студента");
+    private JMenuItem deleteMenuItem = new JMenuItem("Удалить студента");
 
     public MyFrame(String title, Dimension d, StudentController studentController) {
         this.title = title;
@@ -84,6 +74,24 @@ public class MyFrame {
 
         frame.add(table.createPanel(),BorderLayout.AFTER_LAST_LINE);
 
+        createButton.addActionListener(new createActionListener());
+        createMenuItem.addActionListener(new createActionListener());
+
+        searchButton.addActionListener(new searchActionListener());
+        searchMenuItem.addActionListener(new searchActionListener());
+
+        deleteButton.addActionListener(new deleteActionListener());
+        deleteMenuItem.addActionListener(new deleteActionListener());
+
+        saveButton.addActionListener(new saveActionListener());
+        saveMenuItem.addActionListener(new saveActionListener());
+
+        openButton.addActionListener(new openActionListener());
+        openMenuItem.addActionListener(new openActionListener());
+
+        offButton.addActionListener(new offActionListener());
+        exitMenuItem.addActionListener(new offActionListener());
+
         createMenuItem.setIcon(new ImageIcon("1.png"));
         openMenuItem.setIcon(new ImageIcon("2.png"));
         saveMenuItem.setIcon(new ImageIcon("3.png"));
@@ -94,17 +102,11 @@ public class MyFrame {
         fileMenu.add(saveMenuItem);
         fileMenu.add(exitMenuItem);
 
-        searchMenu.add(menuItem1);
-        searchMenu.add(menuItem2);
-        searchMenu.add(menuItem3);
-        searchMenu.add(menuItem4);
-        searchMenu.add(menuItem5);
+        searchMenuItem.setIcon(new ImageIcon("4.png"));
+        deleteMenuItem.setIcon(new ImageIcon("5.png"));
 
-        deleteMenu.add(menuDelete1);
-        deleteMenu.add(menuDelete2);
-        deleteMenu.add(menuDelete3);
-        deleteMenu.add(menuDelete4);
-        deleteMenu.add(menuDelete5);
+        searchMenu.add(searchMenuItem);
+        deleteMenu.add(deleteMenuItem);
 
         menubar.add(fileMenu);
         menubar.add(searchMenu);
@@ -113,73 +115,73 @@ public class MyFrame {
 
         frame.setVisible(true);
         frame.pack();
+    }
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser filesave = new JFileChooser();
-                int val = filesave.showDialog(null,"Сохранить");
-                if(val == JFileChooser.APPROVE_OPTION) {
-                    File file = filesave.getSelectedFile();
-                    SaveDialog saveStudentDialog = new SaveDialog(studentController, file);
-                    saveStudentDialog.save();
+    public class saveActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser filesave = new JFileChooser();
+            int val = filesave.showDialog(null,"Сохранить");
+            if(val == JFileChooser.APPROVE_OPTION) {
+                File file = filesave.getSelectedFile();
+                SaveDialog saveStudentDialog = new SaveDialog(studentController, file);
+                saveStudentDialog.save();
+            }
+        }
+    }
+
+    public class openActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileopen = new JFileChooser();
+            int val = fileopen.showDialog(null, "Открыть файл");
+            if (val == JFileChooser.APPROVE_OPTION) {
+                File file = fileopen.getSelectedFile();
+                SAXParserFactory parserF = SAXParserFactory.newInstance();
+                Handler handler = new Handler(studentController, MyFrame.this);
+                try {
+                    SAXParser saxParser = parserF.newSAXParser();
+                    saxParser.parse(file, handler);
+                } catch (SAXException e1) {
+                    e1.printStackTrace();
+                } catch (ParserConfigurationException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
-        });
+        }
+    }
 
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileopen = new JFileChooser();
-                int val = fileopen.showDialog(null, "Открыть файл");
-                if (val == JFileChooser.APPROVE_OPTION) {
-                    File file = fileopen.getSelectedFile();
-                    SAXParserFactory parserF = SAXParserFactory.newInstance();
-                    Handler handler = new Handler(studentController, MyFrame.this);
-                    try {
-                        SAXParser saxParser = parserF.newSAXParser();
-                        saxParser.parse(file, handler);
-                    } catch (SAXException e1) {
-                        e1.printStackTrace();
-                    } catch (ParserConfigurationException e1) {
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
+    public class createActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DialogCreate addStudentDialog = new DialogCreate(studentController, MyFrame.this);
+            addStudentDialog.create();
+        }
+    }
 
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogCreate addStudentDialog = new DialogCreate(studentController, MyFrame.this);
-                addStudentDialog.create();
-            }
-        });
+    public class searchActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DialogSearch searchStudentDialog = new DialogSearch(studentController);
+            searchStudentDialog.search();
+        }
+    }
 
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogSearch searchStudentDialog = new DialogSearch(studentController);
-                searchStudentDialog.search();
-            }
-        });
+    public class deleteActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DialogDelete searchStudentDialog = new DialogDelete(studentController, MyFrame.this);
+            searchStudentDialog.delete();
+        }
+    }
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogDelete searchStudentDialog = new DialogDelete(studentController, MyFrame.this);
-                searchStudentDialog.delete();
-            }
-        });
-
-        offButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+    public class offActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 
     public void generationTable()

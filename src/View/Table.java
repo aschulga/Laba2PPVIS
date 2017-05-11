@@ -201,7 +201,13 @@ public class Table {
     public class otherNumberRecordActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            numberRecord = Integer.parseInt(numberRecordsText.getText());
+
+            if((Integer.parseInt(numberRecordsText.getText()) <= valueNull) && !(numberRecordsText.getText().equals("")) ) {
+                JOptionPane.showMessageDialog(new Frame(), "Некорректный ввод числа. Для продолжения работы нажмите \"ОК\"");
+                numberRecord = number;
+            }
+            else
+                numberRecord = Integer.parseInt(numberRecordsText.getText());
             genTable(base);
         }
     }
